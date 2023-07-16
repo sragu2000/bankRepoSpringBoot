@@ -1,21 +1,12 @@
-package com.bank.Bank.Controller;
+package com.bank.bank.controller;
 
-import com.bank.Bank.Model.AccountModel;
-import com.bank.Bank.Model.BankModel;
-import com.bank.Bank.Model.CustomerModel;
-import com.bank.Bank.Repository.BankRepository;
-import com.bank.Bank.Repository.CustomerRepository;
-import com.bank.Bank.Service.CustomerService;
+import com.bank.bank.dto.ResponseDto;
+import com.bank.bank.domain.CustomerDomain;
+import com.bank.bank.repository.CustomerRepository;
+import com.bank.bank.service.CustomerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/customer")
@@ -27,47 +18,47 @@ public class CustomerController {
     CustomerService customerService;
 
     @PostMapping("/save")
-    public ResponseEntity<CustomerModel> createCustomer(@RequestBody CustomerModel customerModel) {
-        return customerService.createCustomer(customerModel);
+    public ResponseDto createCustomer(@Valid  @RequestBody CustomerDomain customerDomain) {
+        return customerService.createCustomer(customerDomain);
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<CustomerModel>> getAllCustomers() {
+    public ResponseDto getAllCustomers() {
         return customerService.getAllCustomers();
     }
 
     @GetMapping("/find-by-id/{id}")
-    public ResponseEntity<CustomerModel> findByID(@PathVariable long id){
+    public ResponseDto findByID(@Valid @PathVariable long id){
         return customerService.findByID(id);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<CustomerModel> deleteCustomerById(@PathVariable Long id) {
+    public ResponseDto deleteCustomerById(@Valid @PathVariable Long id) {
         return customerService.deleteCustomerById(id);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<CustomerModel> updateCustomerById(@PathVariable Long id, @RequestBody CustomerModel customerModel) {
-        return customerService.updateCustomerById(id, customerModel);
+    public ResponseDto updateCustomerById(@Valid @PathVariable Long id, @RequestBody CustomerDomain customerDomain) {
+        return customerService.updateCustomerById(id, customerDomain);
     }
 
     @GetMapping("/get-all/name")
-    public ResponseEntity<List<CustomerModel>> getAllCustomersByName(@RequestParam String name) {
+    public ResponseDto getAllCustomersByName(@Valid @RequestParam String name) {
         return customerService.getAllCustomersByName(name);
     }
 
     @GetMapping("/get-all/nic")
-    public ResponseEntity<List<CustomerModel>> getAllCustomersByNic(@RequestParam String nic) {
+    public ResponseDto getAllCustomersByNic(@Valid @RequestParam String nic) {
         return customerService.getAllCustomersByNic(nic);
     }
 
     @GetMapping("/get-all/address")
-    public ResponseEntity<List<CustomerModel>> getAllCustomersByAddress(@RequestParam String address) {
+    public ResponseDto getAllCustomersByAddress(@Valid @RequestParam String address) {
         return customerService.getAllCustomersByAddress(address);
     }
 
     @GetMapping("/get-all-by-properties")
-    public ResponseEntity<List<CustomerModel>> getAllCustomersByProperties(@RequestParam(required = false) String name, @RequestParam(required = false) String nic, @RequestParam(required = false) String address) {
+    public ResponseDto getAllCustomersByProperties(@Valid @RequestParam(required = false) String name, @RequestParam(required = false) String nic, @RequestParam(required = false) String address) {
         return customerService.getAllCustomersByProperties(name, nic, address);
     }
 

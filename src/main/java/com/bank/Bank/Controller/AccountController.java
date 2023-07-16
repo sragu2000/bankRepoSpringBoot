@@ -1,12 +1,13 @@
-package com.bank.Bank.Controller;
+package com.bank.bank.controller;
 
-import com.bank.Bank.Model.AccountModel;
-import com.bank.Bank.Repository.AccountRepository;
-import com.bank.Bank.Service.AccountService;
+import com.bank.bank.dto.ResponseDto;
+import com.bank.bank.domain.AccountDomain;
+import com.bank.bank.repository.AccountRepository;
+import com.bank.bank.service.AccountService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+
 @RestController
 @RequestMapping("/account")
 
@@ -16,27 +17,27 @@ public class AccountController {
     @Autowired
     AccountService accountService;
     @PostMapping("/save")
-    public ResponseEntity<AccountModel> createAccount(@RequestBody AccountModel accountModel) {
-        return accountService.createAccount(accountModel);
+    public ResponseDto createAccount(@Valid  @RequestBody AccountDomain accountDomain) {
+        return accountService.createAccount(accountDomain);
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<AccountModel>> getAllAccounts() {
+    public ResponseDto getAllAccounts() {
         return accountService.getAllAccounts();
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<AccountModel> deleteAccountById(@PathVariable Long id) {
+    public ResponseDto deleteAccountById(@Valid @PathVariable Long id) {
         return accountService.deleteAccountById(id);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<AccountModel> updateAccountById( @PathVariable Long id , @RequestBody AccountModel accountModel){
-        return accountService.updateAccountById(id, accountModel);
+    public ResponseDto updateAccountById(  @PathVariable Long id , @RequestBody AccountDomain accountDomain){
+        return accountService.updateAccountById(id, accountDomain);
     }
 
     @GetMapping("/get-balance/{id}")
-    public ResponseEntity<Double> getBalanceById(@PathVariable Long id){
+    public ResponseDto getBalanceById(@Valid @PathVariable Long id){
         return accountService.getBalanceById(id);
     }
 }

@@ -1,16 +1,12 @@
-package com.bank.Bank.Controller;
-import com.bank.Bank.Model.AccountTypeModel;
-import com.bank.Bank.Repository.AccountTypeRepository;
-import com.bank.Bank.Service.AccountTypeService;
+package com.bank.bank.controller;
+
+import com.bank.bank.dto.ResponseDto;
+import com.bank.bank.domain.AccountTypeDomain;
+import com.bank.bank.repository.AccountTypeRepository;
+import com.bank.bank.service.AccountTypeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/account-type")
@@ -21,29 +17,22 @@ public class AccountTypeController {
     AccountTypeRepository accountTypeRepository;
 
     @PostMapping("/save")
-    public ResponseEntity<?> createAccountType( @Valid @RequestBody AccountTypeModel accountTypeModel, BindingResult bindingResult){
-        if (bindingResult.hasErrors()) {
-            List<String> errors = bindingResult.getAllErrors()
-                    .stream()
-                    .map(ObjectError::getDefaultMessage)
-                    .collect(Collectors.toList());
-            return new ResponseEntity<>(errors, HttpStatusCode.valueOf(400));
-        }
-        return accountTypeService.createAccountType(accountTypeModel);
+    public ResponseDto createAccountType(@Valid @RequestBody AccountTypeDomain accountTypeDomain){
+        return accountTypeService.createAccountType(accountTypeDomain);
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<AccountTypeModel>> getAllAccountTypes() {
+    public ResponseDto getAllAccountTypes() {
         return accountTypeService.getAllAccountTypes();
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<AccountTypeModel> deleteAccountTypeById(@PathVariable Long id) {
+    public ResponseDto deleteAccountTypeById(@Valid @PathVariable Long id) {
         return accountTypeService.deleteAccountTypeById(id);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<AccountTypeModel> updateAccountById(@PathVariable Long id , @RequestBody AccountTypeModel accountTypeModel){
-        return accountTypeService.updateAccountById(id, accountTypeModel);
+    public ResponseDto updateAccountById( @PathVariable Long id , @RequestBody AccountTypeDomain accountTypeDomain){
+        return accountTypeService.updateAccountById(id, accountTypeDomain);
     }
 }

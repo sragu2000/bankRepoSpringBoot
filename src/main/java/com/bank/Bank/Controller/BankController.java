@@ -1,12 +1,11 @@
-package com.bank.Bank.Controller;
-import com.bank.Bank.Model.BankModel;
-import com.bank.Bank.Repository.BankRepository;
-import com.bank.Bank.Service.BankService;
+package com.bank.bank.controller;
+import com.bank.bank.dto.ResponseDto;
+import com.bank.bank.domain.BankDomain;
+import com.bank.bank.repository.BankRepository;
+import com.bank.bank.service.BankService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/bank")
@@ -15,30 +14,30 @@ public class BankController {
     BankRepository bankRepository;
 
     @Autowired
-    BankService bankService;
+    BankService bankServiceImpl;
 
     @PostMapping("/save")
-    public ResponseEntity<BankModel> createBank(@RequestBody BankModel bankModel) {
-        return bankService.createBank(bankModel);
+    public ResponseDto createBank(@Valid  @RequestBody BankDomain bankDomain) {
+        return bankServiceImpl.createBank(bankDomain);
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<BankModel>> getAllBanks() {
-        return bankService.getAllBanks();
+    public ResponseDto getAllBanks() {
+        return bankServiceImpl.getAllBanks();
     }
 
     @GetMapping("/get-all/location")
-    public ResponseEntity<List<BankModel>> getBankByLocation(String location) {
-        return bankService.getBankByLocation(location);
+    public ResponseDto getBankByLocation(@Valid String location) {
+        return bankServiceImpl.getBankByLocation(location);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<BankModel> deleteBankById(@PathVariable Long id) {
-        return bankService.deleteBankById(id);
+    public ResponseDto deleteBankById(@Valid @PathVariable Long id) {
+        return bankServiceImpl.deleteBankById(id);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<BankModel> updateBankById(@PathVariable Long id, @RequestBody BankModel bankModel) {
-        return bankService.updateBankById(id,bankModel);
+    public ResponseDto updateBankById(@Valid @PathVariable Long id, @RequestBody BankDomain bankDomain) {
+        return bankServiceImpl.updateBankById(id, bankDomain);
     }
 }
